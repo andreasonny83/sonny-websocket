@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+  <div id="player_info">
+    <div class="row player_name">
+      <p></p>
+    </div>
+    <div class="row">
+      <label for="player_name">Player Name</label>
+      <input id="player_name" type="text" value="Player">
+    </div>
+    <div class="row">
+      <label for="frame_rate">Frame rate</label>
+      <input id="frame_rate" type="number" value="0">
+    </div>
+    <div class="row">
+      <label for="player_speed">Player speed</label>
+      <input id="player_speed" type="number" value="10">
+    </div>
+  </div>
+  <div id="game_status">
+    <div class="row" id="game_status_notifications"></div>
+    <div class="row">
+      <form id="chat_form">
+        <input id="chat_box" type="text" value="" placeholder="chat">
+      </form>
+    </div>
+  </div>
+  <canvas id="cvs"></canvas>
+
+  <script src="./js/variables.js"></script>
+  <script src="./js/modules/board.js"></script>
+  <script src="./js/modules/player.js"></script>
+  <script src="./js/app.js"></script>
+  <script src="./socket.io/socket.io.js"></script>
+  <script>
+  var socket = io();
+
+  document.querySelector( '#chat_form' ).addEventListener( 'submit', function( evt ) {
+    var playerName = document.querySelector( '#player_name' );
+    var chatBox = document.querySelector( '#chat_box' );
+
+    socket.emit( 'chat', { sender: playerName.value, msg: chatBox.value } );
+    chatBox.value = '';
+    evt.preventDefault();
+  });
+
+  socket.on( 'chat', function( data ) {
+    var para = document.createElement( "p" );
+    var node = document.createTextNode( data );
+    para.appendChild( node );
+
+    var notification_box = document.querySelector( '#game_status_notifications' );
+    notification_box.appendChild( para );
+    notification_box.scrollTop = notification_box.scrollHeight;
+  });
+
+  socket.on( 'notification', function( msg ) {
+    var para = document.createElement( "p" );
+    var node = document.createTextNode( msg );
+    para.appendChild( node );
+
+    var notification_box = document.querySelector( '#game_status_notifications' );
+    notification_box.appendChild( para );
+    notification_box.scrollTop = notification_box.scrollHeight;
+  });
+  </script>
+</body>
+</html>

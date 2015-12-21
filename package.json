@@ -1,0 +1,18 @@
+{
+  "name": "sonny-websocket",
+  "version": "0.0.1",
+  "description": "Test app using socket.io",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Andrea Sonny <andreasonny83@gmail.com>",
+  "license": "MIT",
+  "engines": {
+    "node": "0.12.2"
+  },
+  "dependencies": {
+    "express": "^4.13.3",
+    "socket.io": "^1.3.7"
+  }
+}
