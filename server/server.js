@@ -2,8 +2,9 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var fs = require("fs");
 
-app.use( express.static( __dirname ) );
+app.use( express.static( __dirname + '/..' ) );
 app.set( 'port', ( process.env.PORT || 3000 ) );
 
 app.get( '/', function( req, res ) {
@@ -24,10 +25,14 @@ io.on( 'connection', function( socket ) {
   });
 
   socket.on( 'chat', function( data ) {
-    console.log( data.sender );
-    console.log( data.msg );
+    var d = new Date();
+    var h = d.getHours();
+    var m = d.getMinutes();
+    var s = d.getSeconds();
 
-    var message = '<' + data.sender + '> ' + data.msg;
+    if ( ! data.msg || data.msg === '' ) return;
+
+    var message = '[' + h + ':' + m + ':' + s + '] <' + data.sender + '> ' + data.msg;
     io.emit( 'chat', message );
   });
 });

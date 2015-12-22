@@ -1,6 +1,7 @@
-(function( c, graph, board, player ){
+(function( c, graph, board, player, frame_rate ){
   var avatar = new Image();
-  avatar.src = player.avatar_url;
+  avatar.src = player.avatar.sprite_url;
+  var frame_rate = frame_rate || 0;
 
   // Move avar wher the user click on the map
   document.getElementById( 'cvs' ).addEventListener( 'click', movePlayerTo, false );
@@ -37,12 +38,14 @@
     playerType = player.type;
 
     document.getElementById( 'player_info' ).querySelector( '.player_name' ).innerHTML = "hello " + player.name;
+    document.querySelector( '#frame_rate' ).value = frame_rate;
+    document.querySelector( '#player_speed' ).value = player.speed;
 
     animloop();
   }
 
   function animloop() {
-    if ( _frame_counter < _frame_rate ) {
+    if ( _frame_counter < frame_rate ) {
       _frame_counter++;
       requestAnimFrame( animloop );
       return;
@@ -55,7 +58,7 @@
   }
 
   function gameLoop() {
-    _frame_rate  = parseInt( document.querySelector( '#frame_rate' ).value );
+    frame_rate  = parseInt( document.querySelector( '#frame_rate' ).value );
     player.speed = parseInt( document.querySelector( '#player_speed' ).value );
     player.name = document.querySelector( '#player_name' ).value;
     document.getElementById( 'player_info' ).querySelector( '.player_name' ).innerHTML = "hello " + player.name;
@@ -65,14 +68,14 @@
     $_GRID.drawGrid();
 
     // Player
-    $_PLAYER.draw( avatar, true );
+    // $_PLAYER.draw( avatar, true );
     $_PLAYER.animateSprite();
     $_PLAYER.draw( avatar, false );
   }
 
   function movePlayerTo( event ) {
-    player.targetPos.x = event.clientX - (player.avatar_size.w / 2);
-    player.targetPos.y = event.clientY - (player.avatar_size.h / 2);
+    player.targetPos.x = event.clientX - (player.avatar.sprite_size.w / 2);
+    player.targetPos.y = event.clientY - (player.avatar.sprite_size.h / 2);
   }
 
-}(_csv, _graph, _board, _player));
+}(_csv, _graph, _board, _player, _frame_rate));

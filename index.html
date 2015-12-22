@@ -17,11 +17,11 @@
     </div>
     <div class="row">
       <label for="frame_rate">Frame rate</label>
-      <input id="frame_rate" type="number" value="0">
+      <input id="frame_rate" type="number" value="">
     </div>
     <div class="row">
       <label for="player_speed">Player speed</label>
-      <input id="player_speed" type="number" value="10">
+      <input id="player_speed" type="number" value="">
     </div>
   </div>
   <div id="game_status">
@@ -34,11 +34,11 @@
   </div>
   <canvas id="cvs"></canvas>
 
-  <script src="./js/variables.js"></script>
-  <script src="./js/modules/board.js"></script>
-  <script src="./js/modules/player.js"></script>
-  <script src="./js/app.js"></script>
-  <script src="./socket.io/socket.io.js"></script>
+  <script src="./app/variables.js"></script>
+  <script src="./app/modules/board.js"></script>
+  <script src="./app/modules/player.js"></script>
+  <script src="./app/app.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
   <script>
   var socket = io();
 
