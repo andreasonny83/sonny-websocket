@@ -1,5 +1,20 @@
 var $_PLAYER = (function( graph, player ) {
 
+  function drawPlayers( players ) {
+    for ( var i in players ) {
+      animateSprite( players[i] );
+
+      if ( players[i].avatar && players[i].avatar.ready ) {
+        graph.drawImage(
+          players[i].avatar.avatar,
+          0, 0, players[i].avatar.sprite_size.w, players[i].avatar.sprite_size.h, // clip size
+          players[i].pos.x, players[i].pos.y, // where on canvas
+          players[i].avatar.sprite_size.w, players[i].avatar.sprite_size.h // image size to draw
+        );
+      }
+    }
+  }
+
   function draw( avatar, shadow ) {
     graph.globalAlpha = shadow ? 0.15 : 1;
 
@@ -13,36 +28,36 @@ var $_PLAYER = (function( graph, player ) {
     graph.globalAlpha = 1;
   }
 
-  function animateSprite() {
-    if ( player.pos.x - player.speed > player.targetPos.x ) {
+  function animateSprite( targetPlayer ) {
+    if ( targetPlayer.pos.x - targetPlayer.speed > targetPlayer.targetPos.x ) {
       //move left
-      player.avatar.animation = 2;
+      targetPlayer.avatar.animation = 2;
       nextFrame();
-      player.pos.x -= player.speed;
+      targetPlayer.pos.x -= targetPlayer.speed;
     }
-    else if ( player.pos.x + player.speed < player.targetPos.x ) {
+    else if ( targetPlayer.pos.x + targetPlayer.speed < targetPlayer.targetPos.x ) {
       //move right
-      player.avatar.animation = 3;
+      targetPlayer.avatar.animation = 3;
       nextFrame();
-      player.pos.x += player.speed;
+      targetPlayer.pos.x += targetPlayer.speed;
     }
-    else if ( player.pos.y + player.speed < player.targetPos.y ) {
+    else if ( targetPlayer.pos.y + targetPlayer.speed < targetPlayer.targetPos.y ) {
       //move down
-      player.avatar.animation = 0;
+      targetPlayer.avatar.animation = 0;
       nextFrame();
-      player.pos.y += player.speed;
+      targetPlayer.pos.y += targetPlayer.speed;
     }
-    else if ( player.pos.y - player.speed > player.targetPos.y ) {
+    else if ( targetPlayer.pos.y - targetPlayer.speed > targetPlayer.targetPos.y ) {
       //move up
-      player.avatar.animation = 1;
+      targetPlayer.avatar.animation = 1;
       nextFrame();
-      player.pos.y -= player.speed;
+      targetPlayer.pos.y -= targetPlayer.speed;
     }
     else {
-      player.pos.x = player.targetPos.x;
-      player.pos.y = player.targetPos.y;
-      player.avatar.animation = 0;
-      player.avatar.frameIndex = 0;
+      targetPlayer.pos.x = targetPlayer.targetPos.x;
+      targetPlayer.pos.y = targetPlayer.targetPos.y;
+      targetPlayer.avatar.animation = 0;
+      targetPlayer.avatar.frameIndex = 0;
     }
   }
 
@@ -58,6 +73,7 @@ var $_PLAYER = (function( graph, player ) {
 
   return {
     draw: draw,
+    drawPlayers: drawPlayers,
     animateSprite: animateSprite
   };
 }( _graph, _player ));

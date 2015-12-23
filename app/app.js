@@ -1,4 +1,4 @@
-(function( c, graph, board, player, frame_rate ){
+(function( c, graph, board, player, players, frame_rate ){
   var avatar = new Image();
   avatar.src = player.avatar.sprite_url;
   var frame_rate = frame_rate || 0;
@@ -69,13 +69,17 @@
 
     // Player
     // $_PLAYER.draw( avatar, true );
-    $_PLAYER.animateSprite();
+    $_PLAYER.animateSprite( player );
     $_PLAYER.draw( avatar, false );
+
+    $_PLAYER.drawPlayers( players );
   }
 
   function movePlayerTo( event ) {
+    var id = socket.io.engine.id;
     player.targetPos.x = event.clientX - (player.avatar.sprite_size.w / 2);
     player.targetPos.y = event.clientY - (player.avatar.sprite_size.h / 2);
+    socket.emit( 'player_pos', { user_id: id, pos: player.pos, targetPos: player.targetPos } );
   }
 
-}(_csv, _graph, _board, _player, _frame_rate));
+}(_csv, _graph, _board, _player, _players, _frame_rate));

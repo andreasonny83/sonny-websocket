@@ -36,4 +36,6 @@ var _csv = document.getElementById( 'cvs' ),
         x: 0,
         y: 0
       }
-    };
+    },
+
+    _players = {};

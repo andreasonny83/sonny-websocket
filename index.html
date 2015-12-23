@@ -41,14 +41,22 @@
   <script src="/socket.io/socket.io.js"></script>
   <script>
   var socket = io();
+  // var _id = socket.io.engine.id;
+  // socket.emit( 'player', _id );
 
   document.querySelector( '#chat_form' ).addEventListener( 'submit', function( evt ) {
     var playerName = document.querySelector( '#player_name' );
     var chatBox = document.querySelector( '#chat_box' );
+    var id = socket.io.engine.id;
 
-    socket.emit( 'chat', { sender: playerName.value, msg: chatBox.value } );
+    socket.emit( 'chat', { user_id: id, sender: playerName.value, msg: chatBox.value } );
     chatBox.value = '';
     evt.preventDefault();
+  });
+
+  socket.on( 'ping', function() {
+    var _id = socket.io.engine.id;
+    socket.emit( 'pong', _id );
   });
 
   socket.on( 'chat', function( data ) {
@@ -70,6 +78,59 @@
     notification_box.appendChild( para );
     notification_box.scrollTop = notification_box.scrollHeight;
   });
+
+  socket.on( 'player_pos', function( player ) {
+    var _id = socket.io.engine.id;
+    var player_id = player.user_id;
+
+    if ( player.user_id === _id ) return;
+
+    if ( _players[player_id] ) {
+      _players[player_id].pos.x = player.pos.x;
+      _players[player_id].pos.y = player.pos.y;
+    }
+    else {
+      // new player
+      var new_player = {
+        name: 'Player',
+        id: player_id,
+        type: 'player',
+        avatar: {
+          sprite_url: './sprites/avatar_a.png',
+          avatar: new Image(),
+          ready: false,
+          sprite_size: {
+            w: 150,
+            h: 120
+          },
+          animation: 0,
+          frameIndex: 0,
+          frameSpeed: 3,
+          frameSpeedIndex: 0,
+          frames: 6
+        },
+        speed: 7,
+        pos: {
+          x: player.pos.x,
+          y: player.pos.y
+        },
+        targetPos: {
+          x: player.targetPos.x,
+          y: player.targetPos.y
+        }
+      }
+
+      _players[player_id] = new_player;
+
+      _players[player_id].avatar.avatar.src = _players[player_id].avatar.sprite_url;
+
+      _players[player_id].avatar.avatar.onload = (function() {
+        _players[player_id].avatar.ready = true;
+      })();
+
+    }
+  });
+
   </script>
 </body>
 </html>
