@@ -1,0 +1,18 @@
+{
+  "name": "sonny-websocket",
+  "description": "Test app using socket.io",
+  "main": "server/server.js",
+  "license": "MIT",
+  "homepage": "https://github.com/andreasonny83/sonny-websocket",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "socket.io-client": "^1.4.5"
+  }
+}
