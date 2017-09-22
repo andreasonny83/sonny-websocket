@@ -7,7 +7,7 @@ app.use( express.static( __dirname + '/..' ) );
 app.set( 'port', ( process.env.PORT || 3000 ) );
 
 app.get( '/', function( req, res ) {
-  res.sendFile( __dirname + '/index.html');
+  res.sendFile( __dirname + '../index.html');
 });
 
 // io.use( function( socket, next ) {
@@ -111,5 +111,5 @@ io.on( 'connection', function( socket ) {
 });
 
 http.listen( app.get( 'port' ), function(){
-  console.log('listening on *:' + app.get( 'port' ) );
+  console.log('listening on http://localhost:' + app.get( 'port' ) );
 });

@@ -5,6 +5,7 @@
   "author": "Andrea Sonny <andreasonny83@gmail.com>",
   "contributors": [],
   "scripts": {
+    "start": "nodemon ./server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "main": "server/server.js",
@@ -17,5 +18,8 @@
     "socket.io": "^1.3.7"
   },
   "private": true,
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^1.12.1"
+  }
 }
